@@ -1,0 +1,73 @@
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up game window
+width = 800
+height = 600
+win = pygame.display.set_mode((width, height))
+pygame.display.set_caption("One Button Game")
+
+# Set up game variables
+bg_color = (135, 206, 235)  # Sky blue color
+ground_color = (34, 139, 34)  # Forest green color
+player_color = (255, 140, 0)  # Orange color
+obstacle_color = (255, 0, 0)  # Red color
+player_size = 50
+player_x = 50
+player_y = height - player_size
+player_jump = False
+player_jump_height = 200
+player_jump_speed = 20
+obstacle_size = 50
+obstacle_x = width
+obstacle_y = height - obstacle_size
+obstacle_speed = 10
+score = 0
+font = pygame.font.SysFont('comicsans', 30, True)
+
+# Set up game loop
+clock = pygame.time.Clock()
+run = True
+while run:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not player_jump:
+                player_jump = True
+
+    # Update game state
+    if player_jump:
+        player_y -= player_jump_speed
+        player_jump_speed -= 1
+        if player_jump_speed <= -player_jump_height:
+            player_jump = False
+            player_jump_speed = 20
+
+    obstacle_x -= obstacle_speed
+    if obstacle_x < -obstacle_size:
+        obstacle_x = width
+        obstacle_y = random.randint(height - obstacle_size - player_size, height - obstacle_size)
+        score += 1
+
+    if player_x + player_size > obstacle_x and player_x < obstacle_x + obstacle_size and player_y + player_size > obstacle_y:
+        run = False
+
+    # Draw game objects
+    win.fill(bg_color)
+    pygame.draw.rect(win, ground_color, (0, height - player_size, width, player_size))
+    pygame.draw.rect(win, player_color, (player_x, player_y, player_size, player_size))
+    pygame.draw.rect(win, obstacle_color, (obstacle_x, obstacle_y, obstacle_size, obstacle_size))
+    score_text = font.render('Score: ' + str(score), 1, (0, 0, 0))
+    win.blit(score_text, (10, 10))
+    pygame.display.update()
+
+    # Set frame rate
+    clock.tick(30)
+
+# Clean up
+pygame.quit()
