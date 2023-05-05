@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+    <style>
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <p id="result"></p>
+
+    <script>
+        // Set up event listeners for buttons
+        const rockButton = document.getElementById("rock");
+        const paperButton = document.getElementById("paper");
+        const scissorsButton = document.getElementById("scissors");
+        rockButton.addEventListener("click", () => play("rock"));
+        paperButton.addEventListener("click", () => play("paper"));
+        scissorsButton.addEventListener("click", () => play("scissors"));
+
+        // Function to determine computer's choice
+        function computerPlay() {
+            const choices = ["rock", "paper", "scissors"];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        // Function to play a single round
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection === computerSelection) {
+                return "It's a tie!";
+            } else if (
+                (playerSelection === "rock" && computerSelection === "scissors") ||
+                (playerSelection === "paper" && computerSelection === "rock") ||
+                (playerSelection === "scissors" && computerSelection === "paper")
+            ) {
+                return `You win! ${playerSelection} beats ${computerSelection}.`;
+            } else {
+                return `You lose! ${computerSelection} beats ${playerSelection}.`;
+            }
+        }
+
+        // Function to play the game
+        function play(playerSelection) {
+            const computerSelection = computerPlay();
+            const result = playRound(playerSelection, computerSelection);
+            const resultDisplay = document.getElementById("result");
+            resultDisplay.textContent = result;
+        }
+    </script>
+</body>
+</html>
