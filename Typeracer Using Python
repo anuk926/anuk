@@ -1,0 +1,29 @@
+import time
+
+def typeracer(text):
+    # Print the text and wait for user to start
+    print(text)
+    input("Press enter to start...")
+    start_time = time.time()
+
+    # Loop through each character of the text and ask user to type it
+    for char in text:
+        user_input = input()
+        if user_input != char:
+            print("Incorrect! Game over.")
+            return
+
+    # If user types all characters correctly, calculate and print typing speed
+    end_time = time.time()
+    time_taken = end_time - start_time
+    print(f"Congratulations! You typed the text in {time_taken:.2f} seconds.")
+
+    # Calculate typing speed in words per minute
+    words = text.split()
+    num_words = len(words)
+    wpm = num_words / (time_taken / 60)
+    print(f"Your typing speed is {wpm:.2f} words per minute.")
+
+# Example usage
+text = "The quick brown fox jumps over the lazy dog."
+typeracer(text)
